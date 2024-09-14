@@ -20,7 +20,7 @@ public class LoginPage {
         errorNotification.shouldHave(exactText(expectedText)).shouldBe(visible);
     }
 
-    public VerificationPage login(DataHelper.AuthInfo info) {
+    public VerificationPage validlogin(DataHelper.AuthInfo info) {
         loginField.setValue(info.getLogin());
         passwordField.setValue(info.getPassword());
         loginButton.click();

@@ -8,8 +8,10 @@ import netology.page.LoginPage;
 
 
 import static com.codeborne.selenide.Selenide.open;
+import static netology.data.DataHelper.*;
 import static netology.data.SQLHelper.cleanAuthCodes;
 import static netology.data.SQLHelper.cleanDatabase;
+
 
 public class BankLoginTest {
     LoginPage loginPage;
@@ -33,7 +35,7 @@ public class BankLoginTest {
     @DisplayName("Should successfully login to dashboard with exist login and password from sut test data")
     void shouldSuccessfulLogin() {
         var authInfo = DataHelper.getAuthInfowithTestData();
-        var verificationPage = loginPage.login(authInfo);
+        var verificationPage = loginPage.validlogin(authInfo);
         verificationPage.verifycationPageVisiblity();
         var verificationCode = SQLHelper.getVerificationCode();
         verificationPage.validVerify(verificationCode);
@@ -43,7 +45,7 @@ public class BankLoginTest {
     @DisplayName("Should get error notification if user is not exist in base")
     void shouldGetErrorNotificationIfLoginWithRandomUserWithoutAddingToBase() {
         var authInfo = DataHelper.generateRandomUser();
-        loginPage.login(authInfo);
+        loginPage.validlogin(authInfo);
         loginPage.verifyErrorNotification("Ошибка! Неверно указан логин или пароль");
     }
 
@@ -51,11 +53,10 @@ public class BankLoginTest {
     @DisplayName("Should get error notification if login with exist in base and active user and random verification code")
     void ShouldGetErrorNotificationIfLoginWithExistUserAndRandomVerificationCode(){
         var authInfo = DataHelper.getAuthInfowithTestData();
-        var verificationPage = loginPage.login(authInfo);
+        var verificationPage = loginPage.validlogin(authInfo);
         verificationPage.verifycationPageVisiblity();
         var verificationCode = DataHelper.generateRandomVerificationCode();
         verificationPage.verify(verificationCode.getCode());
         verificationPage.verifyErrorNotification("Ошибка! Неверно указан код. Попробуйте еще раз.");
-
     }
 }
